@@ -12,6 +12,8 @@ object Sequence {
       case 0 => -1
       case 1 => 1
       case -1 => -1
+      case _ =>
+        throw new IllegalArgumentException("Sequence needs to be binary vector (either {0, 1} or {-1, 1}")
     })
 
   // if we try to pass `Vector[Int]` to function
