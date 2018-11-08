@@ -4,6 +4,13 @@ case class Sequence private(s: Vector[Int]) extends AnyVal {
   def get(i: Int) = s(i)
 
   def reverse = new Sequence(s.reverse)
+
+  def updated(index: Int, elem: Int) = new Sequence(s.updated(index, elem))
+
+  def toBinaryVector: Vector[Int] = s.map {
+    case -1 => 0
+    case x => x
+  }
 }
 
 object Sequence {
@@ -20,4 +27,32 @@ object Sequence {
   // that requires `Sequence` it will be automatically
   // converted if this function is in scope :)
   implicit def vec2seq(s: Vector[Int]): Sequence = apply(s)
+
+  // (3.6)
+  def sawSearch(s: Sequence, maxIters: Int): Sequence = {
+    var walkList = Set(s)
+    var Si = s
+    var Sbest = s
+    var Fbest = Evaluation.meritFactor(Sbest)
+
+    (0 until maxIters).foreach { _ =>
+      var Fi = Double.MinValue
+
+      (0 until s.length).foreach { j =>
+        val Stmp = Si.updated(j, -1 * Si.get(j))
+        val Ftmp = Evaluation.meritFactor(Stmp)
+
+        if (Ftmp > Fi && !walkList.contains(Stmp)) {
+          Si = Stmp
+          Fi = Ftmp
+        }
+      }
+      walkList = walkList + Si
+      if (Fi > Fbest) {
+        Sbest = Si
+        Fbest = Fi
+      }
+    }
+    Sbest
+  }
 }
