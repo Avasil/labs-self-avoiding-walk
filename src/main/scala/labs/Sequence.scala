@@ -51,7 +51,9 @@ object Sequence {
     var Sbest = s
     var Fbest = Evaluation.meritFactor(Sbest)
 
-    (0 until maxIters).foreach { _ =>
+    var iteration = 0
+    var keepGoing = true
+    while (iteration < maxIters && keepGoing) {
       var Fi = Double.MinValue
 
       (0 until s.length).foreach { j =>
@@ -69,10 +71,10 @@ object Sequence {
           Sbest = Si
           Fbest = Fi
         }
+      } else {
+        keepGoing = false
       }
-      else {
-        return Sbest
-      }
+      iteration += 1
     }
     Sbest
   }
