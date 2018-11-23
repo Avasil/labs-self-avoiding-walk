@@ -1,4 +1,4 @@
-import Evaluation._
+import labs.Evaluation._
 import minitest.SimpleTestSuite
 
 object EvaluationSuite extends SimpleTestSuite {

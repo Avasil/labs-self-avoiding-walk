@@ -10,3 +10,15 @@ cd labs-self-avoiding-walk
 
 sbt test
 ```
+
+## Running simulation in loop
+
+Takes three parameters in order:
+- length of the sequence
+- max number of iterations
+- time in seconds
+e.g.
+
+```
+sbt run 67 20000 900
+```

@@ -1,3 +1,5 @@
+package labs
+
 import scala.util.Random
 
 case class Sequence private(s: Vector[Int]) extends AnyVal {
@@ -28,7 +30,7 @@ object Sequence {
       case 1 => 1
       case -1 => -1
       case _ =>
-        throw new IllegalArgumentException("Sequence needs to be binary vector (either {0, 1} or {-1, 1}")
+        throw new IllegalArgumentException("labs.Sequence needs to be binary vector (either {0, 1} or {-1, 1}")
     })
 
   def gen(size: Int): Sequence = {
@@ -38,7 +40,7 @@ object Sequence {
   }
 
   // if we try to pass `Vector[Int]` to function
-  // that requires `Sequence` it will be automatically
+  // that requires `labs.Sequence` it will be automatically
   // converted if this function is in scope :)
   implicit def vec2seq(s: Vector[Int]): Sequence = apply(s)
 

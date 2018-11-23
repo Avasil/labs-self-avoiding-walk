@@ -1,3 +1,4 @@
+import labs.{Evaluation, Sequence}
 import minitest.SimpleTestSuite
 
 object SawSearchSuite extends SimpleTestSuite {

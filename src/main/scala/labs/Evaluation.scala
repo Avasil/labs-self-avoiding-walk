@@ -1,3 +1,5 @@
+package labs
+
 import scala.math.pow
 
 object Evaluation {

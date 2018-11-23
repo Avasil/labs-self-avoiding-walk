@@ -1,3 +1,5 @@
+package labs
+
 import scala.concurrent.duration._
 import scala.util.Try
 
