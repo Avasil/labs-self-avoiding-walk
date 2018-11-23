@@ -36,7 +36,7 @@ object EvalLoop {
     for {
       energy <- IO.pure(Evaluation.energy(s))
       currentTime <- IO((System.currentTimeMillis() - startedTime) / 1000)
-      _ <- putStrLn(s"$energy         $currentTime         $s")
+      _ <- putStrLn(s"E: $energy - $currentTime [s] - $s")
     } yield CSVRecord(currentTime, energy, s.toString)
 
   case class CSVRecord(time: Long, energy: Int, sequence: String)

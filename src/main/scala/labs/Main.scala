@@ -8,7 +8,6 @@ object Main extends IOApp {
       params <- IO.fromEither(Parameters.fromArgs(args))
       _ <- putStrLn(s"Running simulation with following parameters: $params")
       startingSequence = Sequence.gen(params.length)
-      _ <- putStrLn(s"Energy     Time [s]  Sequence")
       _ <- EvalLoop.runTimed(startingSequence, params)
     } yield ExitCode.Success
   }
