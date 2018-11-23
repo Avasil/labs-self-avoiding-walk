@@ -1,6 +1,7 @@
+import scala.concurrent.duration._
 import scala.util.Try
 
-case class Parameters(length: Int, iterations: Int, time: Int)
+case class Parameters(length: Int, iterations: Int, time: FiniteDuration)
 
 object Parameters {
   def fromArgs(args: List[String]): Either[IllegalArgumentException, Parameters] =
@@ -10,7 +11,7 @@ object Parameters {
           for {
             l <- Try(length.toInt)
             iters <- Try(iterations.toInt)
-            t <- Try(time.toInt)
+            t <- Try(time.toInt.second)
           } yield Parameters(l, iters, t)
 
         params

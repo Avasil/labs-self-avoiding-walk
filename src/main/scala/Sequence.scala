@@ -13,6 +13,12 @@ case class Sequence private(s: Vector[Int]) extends AnyVal {
     case -1 => 0
     case x => x
   }
+
+  override def toString: String = {
+    val buffer = new StringBuilder(s.size)
+    toBinaryVector.foreach(buffer.append)
+    buffer.mkString
+  }
 }
 
 object Sequence {
@@ -61,7 +67,8 @@ object Sequence {
           Sbest = Si
           Fbest = Fi
         }
-      } else {
+      }
+      else {
         return Sbest
       }
     }
