@@ -32,3 +32,5 @@ Running it many times with low maximum number of iterations usually peaks quite 
 despite not reaching the best sequence. 
 
 Using high number of iterations it usually finds the best solution in one of the first runs.
+
+[Results for comparison](https://github.com/borkob/git_labs/blob/master/results-2016/2016-labs-skew.txt)
