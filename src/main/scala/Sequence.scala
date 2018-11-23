@@ -1,3 +1,5 @@
+import scala.util.Random
+
 case class Sequence private(s: Vector[Int]) extends AnyVal {
   def length: Int = s.length
 
@@ -23,6 +25,12 @@ object Sequence {
         throw new IllegalArgumentException("Sequence needs to be binary vector (either {0, 1} or {-1, 1}")
     })
 
+  def gen(size: Int): Sequence = {
+    val vector = Vector.fill(size)(Random.nextInt(2))
+
+    Sequence(vector)
+  }
+
   // if we try to pass `Vector[Int]` to function
   // that requires `Sequence` it will be automatically
   // converted if this function is in scope :)
@@ -47,10 +55,14 @@ object Sequence {
           Fi = Ftmp
         }
       }
-      walkList = walkList + Si
-      if (Fi > Fbest) {
-        Sbest = Si
-        Fbest = Fi
+      if (!walkList.contains(Si)) {
+        walkList = walkList + Si
+        if (Fi > Fbest) {
+          Sbest = Si
+          Fbest = Fi
+        }
+      } else {
+        return Sbest
       }
     }
     Sbest
