@@ -22,3 +22,13 @@ e.g.
 ```
 sbt run 67 20000 900
 ```
+
+It will save the results in `output/` directory as CSV file.
+
+## Observations
+
+This algorithm seems to need very high number of maximum iterations for higher number of sequences.
+Running it many times with low maximum number of iterations usually peaks quite fast and never improves
+despite not reaching the best sequence. 
+
+Using high number of iterations it usually finds the best solution in one of the first runs.
