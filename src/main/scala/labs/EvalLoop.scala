@@ -26,8 +26,8 @@ object EvalLoop {
 
     for {
       csvRecord <- showResult(newSequence, startedTime)
-      _ <- IO.cancelBoundary
       _ <- ref.update(_ :+ csvRecord)
+      _ <- IO.cancelBoundary
       _ <- evalLoop(newSequence, maxIters, startedTime, ref)
     } yield ()
   }
