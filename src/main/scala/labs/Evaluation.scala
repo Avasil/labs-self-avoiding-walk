@@ -6,16 +6,14 @@ object Evaluation {
   // (2.1)
   def autocorrelation(s: Sequence, k: Int): Int = {
     val l = s.length
-    (0 until l - k)
-      .map { i => s.get(i) * s.get(i + k) }
-      .sum
+    Stream.range(0, l - k, 1)
+      .foldLeft(0)((sum, i) => sum + s.get(i) * s.get(i + k))
   }
 
   // (2.2)
   def energy(s: Sequence): Int =
-    (1 until s.length)
-      .map(k => pow(autocorrelation(s, k), 2).toInt)
-      .sum
+    Stream.range(1, s.length)
+      .foldLeft(0)((sum, k) => sum + pow(autocorrelation(s, k), 2).toInt)
 
   // (2.3)
   def meritFactor(s: Sequence): Double =
