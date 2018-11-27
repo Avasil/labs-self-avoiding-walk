@@ -7,7 +7,7 @@ object Evaluation {
   def autocorrelation(s: Sequence, k: Int): Int = {
     val l = s.length
     Stream.range(0, l - k, 1)
-      .foldLeft(0)((sum, i) => sum + s.get(i) * s.get(i + k))
+      .foldLeft(0)((sum, i) => sum + s(i) * s(i + k))
   }
 
   // (2.2)

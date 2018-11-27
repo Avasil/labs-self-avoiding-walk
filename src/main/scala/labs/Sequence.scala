@@ -3,15 +3,15 @@ package labs
 import scala.util.Random
 
 case class Sequence private(s: Vector[Int]) extends AnyVal {
-  def length: Int = s.length
+  final def length: Int = s.length
 
-  def get(i: Int) = s(i)
+  final def apply(i: Int) = s(i)
 
-  def reverse = new Sequence(s.reverse)
+  final def reverse = new Sequence(s.reverse)
 
-  def updated(index: Int, elem: Int) = new Sequence(s.updated(index, elem))
+  final def updated(index: Int, elem: Int) = new Sequence(s.updated(index, elem))
 
-  def toBinaryVector: Vector[Int] = s.map {
+  final def toBinaryVector: Vector[Int] = s.map {
     case -1 => 0
     case x => x
   }
@@ -57,7 +57,7 @@ object Sequence {
       var Fi = Double.MinValue
 
       (0 until s.length).foreach { j =>
-        val Stmp = Si.updated(j, -1 * Si.get(j))
+        val Stmp = Si.updated(j, -1 * Si(j))
         val Ftmp = Evaluation.meritFactor(Stmp)
 
         if (Ftmp > Fi && !walkList.contains(Stmp)) {
