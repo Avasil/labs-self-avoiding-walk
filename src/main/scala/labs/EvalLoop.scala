@@ -7,13 +7,14 @@ import cats.effect.{ContextShift, IO, Timer}
 import purecsv.unsafe._
 
 object EvalLoop {
-  def runTimed(s: Sequence, params: Parameters)(implicit cs: ContextShift[IO], timer: Timer[IO]): IO[Unit] = {
+  def runTimed(params: Parameters)(implicit cs: ContextShift[IO], timer: Timer[IO]): IO[Unit] = {
+    val firstSequence = Sequence.gen(params.length)
     for {
-      _ <- showResult(s, System.currentTimeMillis())
+      initialResult <- showResult(firstSequence, System.currentTimeMillis())
       // shared state for saving csv lines
-      ref <- Ref[IO].of[Vector[CSVRecord]](Vector())
+      ref <- Ref[IO].of[Vector[CSVRecord]](Vector(initialResult))
       _ <- IO.race(
-        evalLoop(s, params.iterations, System.currentTimeMillis(), ref),
+        evalLoop(firstSequence, params.iterations, params.length, System.currentTimeMillis(), ref),
         IO.sleep(params.time)
       )
       csvRecords <- ref.get
@@ -21,14 +22,15 @@ object EvalLoop {
     } yield ()
   }
 
-  private def evalLoop(s: Sequence, maxIters: Int, startedTime: Long, ref: Ref[IO, Vector[CSVRecord]]): IO[Unit] = {
+  private def evalLoop(s: Sequence, maxIters: Int, length: Int, startedTime: Long,
+                       ref: Ref[IO, Vector[CSVRecord]]): IO[Unit] = {
     val newSequence = Sequence.sawSearch(s, maxIters)
 
     for {
       csvRecord <- showResult(newSequence, startedTime)
       _ <- ref.update(_ :+ csvRecord)
       _ <- IO.cancelBoundary
-      _ <- evalLoop(newSequence, maxIters, startedTime, ref)
+      _ <- evalLoop(Sequence.gen(length), maxIters, length, startedTime, ref)
     } yield ()
   }
 

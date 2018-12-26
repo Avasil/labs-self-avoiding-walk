@@ -7,8 +7,7 @@ object Main extends IOApp {
     for {
       params <- IO.fromEither(Parameters.fromArgs(args))
       _ <- putStrLn(s"Running simulation with following parameters: $params")
-      startingSequence = Sequence.gen(params.length)
-      _ <- EvalLoop.runTimed(startingSequence, params)
+      _ <- EvalLoop.runTimed(params)
     } yield ExitCode.Success
   }
 }
