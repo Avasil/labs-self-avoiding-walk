@@ -18,7 +18,7 @@ object EvalLoop {
         IO.sleep(params.time)
       )
       csvRecords <- ref.get
-      _ <- writeCSV(csvRecords)
+      _ <- writeCSV(params, csvRecords)
     } yield ()
   }
 
@@ -43,8 +43,8 @@ object EvalLoop {
 
   case class CSVRecord(time: Long, energy: Int, sequence: String)
 
-  private def writeCSV(records: Seq[CSVRecord]): IO[Unit] = IO {
-    val file = new File(s"output/${System.currentTimeMillis()}.csv")
+  private def writeCSV(params: Parameters, records: Seq[CSVRecord]): IO[Unit] = IO {
+    val file = new File(s"output/${params.length}-${params.iterations}-${params.time}-${System.currentTimeMillis()}.csv")
     if ((file.getParentFile.mkdirs() || file.getParentFile.exists()) && file.createNewFile()) {
       println("Writing results to CSV file.")
       records.writeCSVToFile(file)

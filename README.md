@@ -23,7 +23,17 @@ e.g.
 sbt run 67 20000 900
 ```
 
-It will save the results in `output/` directory as CSV file.
+It will save the results in `output/` directory as CSV file with the following name convention:
+
+```
+length-iterations-time-timestamp
+```
+
+where 
+`length` is the length of the sequence
+`iterations` is maximum number of iterations
+`time` is the duration of the algorithm
+`timestamp` is the time of the run
 
 ## Observations
 
