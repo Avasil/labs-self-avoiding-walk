@@ -7,7 +7,8 @@ import cats.effect.{ContextShift, IO, Timer}
 import purecsv.unsafe._
 
 object EvalLoop {
-  def runTimed(params: Parameters)(implicit cs: ContextShift[IO], timer: Timer[IO]): IO[Unit] = {
+
+  def runTimed(params: Parameters)(implicit cs: ContextShift[IO], timer: Timer[IO]): IO[Vector[CSVRecord]] = {
     val firstSequence = Sequence.gen(params.length)
     for {
       initialResult <- showResult(firstSequence, System.currentTimeMillis())
@@ -18,8 +19,17 @@ object EvalLoop {
         IO.sleep(params.time)
       )
       csvRecords <- ref.get
-      _ <- writeCSV(params, csvRecords)
-    } yield ()
+    } yield csvRecords
+  }
+
+  def writeCSV(params: Parameters)(records: Vector[CSVRecord]): IO[Unit] = IO {
+    val file = new File(s"output/${params.length}-${params.iterations}-${params.time.toSeconds}-${System.currentTimeMillis()}.csv")
+    if ((file.getParentFile.mkdirs() || file.getParentFile.exists()) && file.createNewFile()) {
+      println("Writing results to CSV file.")
+      records.writeCSVToFile(file)
+    } else {
+      println(s"Couldn't write to ${file.getAbsolutePath}")
+    }
   }
 
   private def evalLoop(s: Sequence, maxIters: Int, length: Int, startedTime: Long,
@@ -42,14 +52,4 @@ object EvalLoop {
     } yield CSVRecord(currentTime, energy, s.toString)
 
   case class CSVRecord(time: Long, energy: Int, sequence: String)
-
-  private def writeCSV(params: Parameters, records: Seq[CSVRecord]): IO[Unit] = IO {
-    val file = new File(s"output/${params.length}-${params.iterations}-${params.time}-${System.currentTimeMillis()}.csv")
-    if ((file.getParentFile.mkdirs() || file.getParentFile.exists()) && file.createNewFile()) {
-      println("Writing results to CSV file.")
-      records.writeCSVToFile(file)
-    } else {
-      println(s"Couldn't write to ${file.getAbsolutePath}")
-    }
-  }
 }
